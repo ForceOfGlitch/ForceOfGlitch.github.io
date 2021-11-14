@@ -5556,6 +5556,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.SetVar,
 		C3.Plugins.Sprite.Acts.SetVisible,
 		C3.Plugins.Text.Acts.SetVisible,
+		C3.Plugins.Eponesh_GameScore.Exps.PlayerScore,
 		C3.Plugins.Eponesh_GameScore.Cnds.IsAdsRewardedAvailable,
 		C3.Plugins.Eponesh_GameScore.Acts.AdsShowRewarded,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
@@ -5566,7 +5567,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Eponesh_GameScore.Cnds.PlayerCompareScore,
 		C3.Plugins.Eponesh_GameScore.Acts.PlayerSetScore,
 		C3.Plugins.Eponesh_GameScore.Acts.PlayerSync,
-		C3.Plugins.Eponesh_GameScore.Exps.PlayerScore,
 		C3.Plugins.Text.Acts.AppendText,
 		C3.Plugins.Eponesh_GameScore.Exps.PlayerID,
 		C3.Plugins.System.Cnds.IsGroupActive,
@@ -5740,11 +5740,11 @@ self.C3_ExpressionFuncs = [
 		() => "Лягушка Pepe стала самым популярным мемом",
 		() => "Павел Дуров приглашает всех в его новый ресторан",
 		() => 2,
-		() => 3,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
 		},
+		() => 3,
 		() => "Игрок#",
 		() => "Клики по основным кнопкам",
 		() => "Клики по кнопкам настроек",
