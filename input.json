@@ -1,0 +1,20 @@
+{
+	"0":
+	{
+	"text":"Новость0",
+	"truthfulness":"1",
+	"image":"https://images.unsplash.com/photo-1640209702049-a692a1190529?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+	},
+	"1":
+	{
+	"text":"Новость1",
+	"truthfulness":"1",
+	"image":"https://images.unsplash.com/photo-1636714536825-4cd759138961?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80"
+	},
+	"2":
+	{
+	"text":"Новость2",
+	"truthfulness":"0",
+	"image":"https://images.unsplash.com/photo-1638024912888-ac77d663c72f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80"
+	}
+}
