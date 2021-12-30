@@ -5942,6 +5942,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.AJAX.Exps.LastData,
 		C3.Plugins.Json.Exps.Get,
 		C3.Plugins.Sprite.Acts.LoadURL,
+		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.Audio.Acts.Play,
@@ -5949,6 +5950,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.System.Acts.SubVar,
 		C3.Plugins.Eponesh_GameScore.Acts.AdsShowFullscreen,
+		C3.Plugins.System.Acts.SetGroupActive,
 		C3.Plugins.Sprite.Acts.SetVisible,
 		C3.Plugins.Text.Acts.SetVisible,
 		C3.Plugins.Eponesh_GameScore.Exps.PlayerScore,
@@ -5966,8 +5968,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Text.Acts.AppendText,
 		C3.Plugins.Eponesh_GameScore.Exps.PlayerID,
-		C3.Plugins.System.Cnds.IsGroupActive,
-		C3.Plugins.System.Acts.SetGroupActive,
 		C3.Plugins.Eponesh_GameScore.Acts.LeaderboardOpen
 	];
 };
@@ -6153,6 +6153,7 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (1 - v0.GetValue());
 		},
+		() => "КнопкиВыбора",
 		() => 0,
 		() => "",
 		() => 9,
@@ -6160,8 +6161,8 @@ self.C3_ExpressionFuncs = [
 		() => 1,
 		() => 3,
 		() => "Игрок#",
-		() => "Клики по основным кнопкам",
 		() => "Клики по кнопкам настроек",
+		() => "Клики по основным кнопкам",
 		() => "score",
 		() => 5,
 		p => {
