@@ -5966,8 +5966,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Eponesh_GameScore.Acts.PlayerSync,
 		C3.Plugins.Sprite.Acts.StartAnim,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
-		C3.Plugins.Text.Acts.AppendText,
-		C3.Plugins.Eponesh_GameScore.Exps.PlayerID,
+		C3.Plugins.Eponesh_GameScore.Exps.PlayerName,
+		C3.Plugins.Eponesh_GameScore.Exps.PlayerAvatar,
 		C3.Plugins.Eponesh_GameScore.Acts.LeaderboardOpen
 	];
 };
@@ -6014,6 +6014,7 @@ self.C3_JsPropNameTable = [
 	{Тач: 0},
 	{AJAX: 0},
 	{JSON: 0},
+	{ФотоПрофиля: 0},
 	{РекордИгрока: 0},
 	{РекламныйСчётчик: 0},
 	{ИстинностьТекущейНовостиДляКнопкиFalse: 0},
@@ -6160,7 +6161,6 @@ self.C3_ExpressionFuncs = [
 		() => "Default",
 		() => 1,
 		() => 3,
-		() => "Игрок#",
 		() => "Клики по кнопкам настроек",
 		() => "Клики по основным кнопкам",
 		() => "score",
