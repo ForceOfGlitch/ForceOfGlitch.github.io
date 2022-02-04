@@ -51,7 +51,7 @@
     },
     "10": {
         "image": "https://prufy.ru/upload/iblock/6a1/6a1deee89eb130ef3f9008ae8924bf9e.jpg",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "Хакеры сочинских путан взломали сайт уфимской мэрии"
     },
     "11": {
@@ -101,7 +101,7 @@
     },
     "20": {
         "image": "https://img6.eadaily.com/r650x400/o/534/24af45f84b16e1686b9e4344a726a.jpg",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "Туристки из Винницы нацарапали свои имена на фреске Рафаэля в музее Ватикана"
     },
     "21": {
@@ -111,7 +111,7 @@
     },
     "22": {
         "image": "https://bloknot-voronezh.ru/thumb/800x0xcut/upload/iblock/c49/8cd99353cd9cc4fdce27dd3dcdb6b7f2.jpg",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "Свинка Пеппа подвела очередного бизнесмена в Воронеже"
     },
     "23": {
@@ -121,7 +121,7 @@
     },
     "24": {
         "image": "https://s13.stc.yc.kpcdn.net/share/i/12/11315952/cr-1200-630.wm-nspru-100-tl-0-0.t-10-3808125-ttps-54-14-32173D-990-l-85-m-1.t-10-3808125-ttps-54-14-FFF-990-l-85-m-1.t-4-1475127-asb-42-10-FFF-788-l-210-b-60.m2020-03-24T14-15-50.jpg",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "Моника Беллуччи не приедет в Железноводск из-за коронавируса"
     },
     "25": {
@@ -186,7 +186,7 @@
     },
     "37": {
         "image": "",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "В Дзержинском районе сосед сжег дачу минчанки из давней мести и все записал в дневнике, озаглавив «Моя борьба»"
     },
     "38": {
@@ -196,7 +196,7 @@
     },
     "39": {
         "image": "https://www.livekuban.ru/sites/default/files/styles/news/public/node/news/main-image/2020-11/0f0502410f113d990d070102f8e36d7f.jpg?itok=7EoHYRb4",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "Опубликовано постановление, по которому жители Кубани будут жить до 21 июня "
     },
     "40": {
@@ -206,7 +206,7 @@
     },
     "41": {
         "image": "https://cdn.ren.tv/dynamic/image/news/1200x630/55/74/710295.jpg",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": "Семья в Таганроге пожаловалась на заставляющее их пить пиво привидение"
     },
     "42": {
@@ -246,12 +246,12 @@
     },
     "49": {
         "image": "https://img.glavnoe.ua/Image2018/2018/12/0003.jpg",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": " Астраханцы в Египте смогут не только отдохнуть, но и заработать на продаже органов"
     },
     "50": {
         "image": "data:image/jpeg;base64,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",
-        "truthfulness": "1",
+        "truthfulness": "0",
         "text": " Через 42 года жительница Приозерска вспомнила, что ее муж куда-то ушел"
     }
 }
