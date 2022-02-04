@@ -5933,10 +5933,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Json,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.Text.Acts.SetText,
-		C3.Plugins.AJAX.Acts.RequestFile,
 		C3.Plugins.System.Acts.SetVar,
 		C3.Plugins.System.Exps.int,
 		C3.Plugins.System.Exps.random,
+		C3.Plugins.AJAX.Acts.RequestFile,
 		C3.Plugins.AJAX.Cnds.OnComplete,
 		C3.Plugins.Json.Acts.Parse,
 		C3.Plugins.AJAX.Exps.LastData,
@@ -6124,12 +6124,12 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
-		() => "input",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => f0(f1(0, 3));
+			return () => f0(f1(0, 50));
 		},
+		() => "input",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
