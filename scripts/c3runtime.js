@@ -5933,15 +5933,21 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Json,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.Text.Acts.SetText,
-		C3.Plugins.System.Acts.SetVar,
-		C3.Plugins.System.Exps.int,
-		C3.Plugins.System.Exps.random,
 		C3.Plugins.AJAX.Acts.RequestFile,
+		C3.Plugins.Arr.Cnds.ArrForEach,
+		C3.Plugins.Arr.Acts.SetX,
+		C3.Plugins.Arr.Exps.CurX,
 		C3.Plugins.AJAX.Cnds.OnComplete,
 		C3.Plugins.Json.Acts.Parse,
 		C3.Plugins.AJAX.Exps.LastData,
+		C3.Plugins.System.Acts.SetVar,
+		C3.Plugins.System.Exps.int,
+		C3.Plugins.System.Exps.random,
+		C3.Plugins.Arr.Exps.Width,
 		C3.Plugins.Json.Exps.Get,
+		C3.Plugins.Arr.Exps.At,
 		C3.Plugins.Sprite.Acts.LoadURL,
+		C3.Plugins.Arr.Acts.Delete,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.System.Cnds.Compare,
@@ -5961,6 +5967,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Eponesh_GameScore.Acts.PlayerSync,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
 		C3.Plugins.Sprite.Acts.StartAnim,
+		C3.Plugins.Arr.Cnds.CompareSize,
+		C3.Plugins.Arr.Acts.SetSize,
 		C3.Plugins.System.Acts.SetBoolVar,
 		C3.Plugins.System.Cnds.Every,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
@@ -6010,11 +6018,14 @@ self.C3_JsPropNameTable = [
 	{ЗвукМеню: 0},
 	{ВашРекордТекстМеню: 0},
 	{ВсплывающееОкно: 0},
+	{newTV: 0},
+	{ПорядокНовостей: 0},
 	{РекордИгрока: 0},
 	{РекламныйСчётчик: 0},
 	{ИстинностьТекущейНовостиДляКнопкиFalse: 0},
 	{ИстинностьТекущейНовостиДляКнопкиTrue: 0},
 	{ПоказВознаграждения: 0},
+	{КоличествоУдалённыхНовостей: 0},
 	{ТекущаяНовость: 0},
 	{ВремяМеждуНаградами: 0},
 	{СостояниеЗвука: 0}
@@ -6122,30 +6133,38 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => f0(f1(0, 50));
-		},
 		() => "input",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject();
+		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
 		},
 		p => {
-			const n0 = p._GetNode(0);
-			const v1 = p._GetNode(1).GetVar();
-			return () => n0.ExpObject((and("", v1.GetValue()) + ".text"));
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const n2 = p._GetNode(2);
+			return () => f0(f1(0, n2.ExpObject()));
 		},
 		p => {
 			const n0 = p._GetNode(0);
-			const v1 = p._GetNode(1).GetVar();
-			return () => n0.ExpObject((and("", v1.GetValue()) + ".image"));
+			const n1 = p._GetNode(1);
+			const v2 = p._GetNode(2).GetVar();
+			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".text"));
 		},
 		p => {
 			const n0 = p._GetNode(0);
-			const v1 = p._GetNode(1).GetVar();
-			return () => n0.ExpObject((and("", v1.GetValue()) + ".truthfulness"));
+			const n1 = p._GetNode(1);
+			const v2 = p._GetNode(2).GetVar();
+			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".image"));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			const v2 = p._GetNode(2).GetVar();
+			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".truthfulness"));
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -6158,6 +6177,7 @@ self.C3_ExpressionFuncs = [
 		() => "Default",
 		() => 1,
 		() => 3,
+		() => 371,
 		() => 180,
 		() => "Клики по основным кнопкам",
 		p => {
