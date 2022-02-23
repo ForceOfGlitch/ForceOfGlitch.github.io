@@ -5969,8 +5969,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.StartAnim,
 		C3.Plugins.Arr.Cnds.CompareSize,
 		C3.Plugins.Arr.Acts.SetSize,
-		C3.Plugins.System.Acts.SetBoolVar,
-		C3.Plugins.System.Cnds.Every,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Eponesh_GameScore.Acts.LeaderboardOpen
 	];
@@ -6027,7 +6025,6 @@ self.C3_JsPropNameTable = [
 	{ПоказВознаграждения: 0},
 	{КоличествоУдалённыхНовостей: 0},
 	{ТекущаяНовость: 0},
-	{ВремяМеждуНаградами: 0},
 	{СостояниеЗвука: 0}
 ];
 }
@@ -6177,8 +6174,7 @@ self.C3_ExpressionFuncs = [
 		() => "Default",
 		() => 1,
 		() => 3,
-		() => 371,
-		() => 180,
+		() => 516,
 		() => "Клики по основным кнопкам",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
