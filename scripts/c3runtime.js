@@ -3654,8 +3654,11 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                     'robohash_robots',
                     'robohash_cats'
                 ],
+                order: ['default', 'DESC', 'ASC'],
                 withMe: ['none', 'first', 'last'],
                 platform: ['YANDEX', 'VK', 'NONE', 'OK', 'GAME_MONETIZE', 'CRAZY_GAMES', 'GAME_DISTRIBUTION'],
+                documentTypes: ['PLAYER_PRIVACY_POLICY'],
+                documentFormat: ['HTML', 'TXT', 'RAW'],
                 compare: [
                     (a, b) => a === b,
                     (a, b) => a !== b,
@@ -3683,9 +3686,12 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             });
 
             this.leaderboard = [];
+            this.leaderboardInfo = {};
+            this.leaderboardRecords = {};
             this.currentLeaderboardIndex = 0;
             this.currentLeaderboardPlayer = {};
             this.lastLeaderboardTag = '';
+            this.lastLeaderboardVariant = '';
             this.lastLeaderboardPlayerRatingTag = '';
             this.leaderboardPlayerPosition = 0;
 
@@ -3764,6 +3770,31 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             this.isReady = false;
             this.isPlayerReady = false;
 
+            this.gamesCollection = {
+                id: 0,
+                tag: '',
+                name: '',
+                description: '',
+                games: []
+            };
+
+            this.currentGameIndex = 0;
+            this.currentGameId = 0;
+            this.currentGameName = '';
+            this.currentGameDescription = '';
+            this.currentGameIcon = '';
+            this.currentGameUrl = '';
+            this.gamesCollectionFetchError = '';
+            this.lastGamesCollectionIdOrTag = '';
+
+            this.document = {
+                type: '',
+                content: ''
+            };
+
+            this.lastDocumentType = '';
+            this.documentFetchError = '';
+
             this.projectId = Number(properties[0] || 0);
             this.publicToken = properties[1];
             this.showPreloaderOnStart = properties[2];
@@ -3835,6 +3866,16 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                     open: stub,
                     fetch: stub,
                     unlock: stub
+                },
+                gamesCollections: {
+                    on() {},
+                    open: stub,
+                    fetch: stub
+                },
+                documents: {
+                    on() {},
+                    open: stub,
+                    fetch: stub
                 },
                 payments: {
                     isAvailable: false,
@@ -3914,6 +3955,7 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
 
         init(gs) {
             this.gs = gs;
+            this._runtime.GetIRuntime().GameScore = gs;
 
             // player
             this.gs.player.on('ready', () => {
@@ -3943,6 +3985,13 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             // achievements
             this.gs.achievements.on('open', () => this.Trigger(this.conditions.OnAchievementsOpen));
             this.gs.achievements.on('close', () => this.Trigger(this.conditions.OnAchievementsClose));
+
+            // games collections
+            this.gs.gamesCollections.on('open', () => this.Trigger(this.conditions.OnGamesCollectionsOpen));
+            this.gs.gamesCollections.on('close', () => this.Trigger(this.conditions.OnGamesCollectionsClose));
+
+            this.gs.documents.on('open', () => this.Trigger(this.conditions.OnDocumentsOpen));
+            this.gs.documents.on('close', () => this.Trigger(this.conditions.OnDocumentsClose));
 
             // fullscreen
             this.gs.fullscreen.on('open', () => this.Trigger(this.conditions.OnFullscreenOpen));
@@ -4011,9 +4060,13 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
         SaveToJson() {
             return {
                 leaderboard: this.leaderboard,
+                leaderboardInfo: this.leaderboardInfo,
+                leaderboardRecords: this.leaderboardRecords,
+
                 currentLeaderboardIndex: this.currentLeaderboardIndex,
                 currentLeaderboardPlayer: this.currentLeaderboardPlayer,
                 lastLeaderboardTag: this.lastLeaderboardTag,
+                lastLeaderboardVariant: this.lastLeaderboardVariant,
                 lastLeaderboardPlayerRatingTag: this.lastLeaderboardPlayerRatingTag,
                 leaderboardPlayerPosition: this.leaderboardPlayerPosition,
 
@@ -4090,15 +4143,35 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                 isConsumeProductSuccess: this.isConsumeProductSuccess,
                 consumeProductError: this.consumeProductError,
                 consumedProductId: this.consumedProductId,
-                consumedProductTag: this.consumedProductTag
+                consumedProductTag: this.consumedProductTag,
+
+                gamesCollection: this.gamesCollection,
+
+                currentGameIndex: this.currentGameIndex,
+                currentGameId: this.currentGameId,
+                currentGameName: this.currentGameName,
+                currentGameDescription: this.currentGameDescription,
+                currentGameIcon: this.currentGameIcon,
+                currentGameUrl: this.currentGameUrl,
+
+                gamesCollectionFetchError: this.gamesCollectionFetchError,
+                lastGamesCollectionIdOrTag: this.lastGamesCollectionIdOrTag,
+
+                document: this.document,
+                lastDocumentType: this.lastDocumentType,
+                documentFetchError: this.documentFetchError
             };
         }
 
         LoadFromJson(o) {
             this.leaderboard = o.leaderboard;
+            this.leaderboardInfo = o.leaderboardInfo || {};
+            this.leaderboardRecords = o.leaderboardRecords || {};
+
             this.currentLeaderboardIndex = o.currentLeaderboardIndex;
             this.currentLeaderboardPlayer = o.currentLeaderboardPlayer;
             this.lastLeaderboardTag = o.lastLeaderboardTag;
+            this.lastLeaderboardVariant = o.lastLeaderboardVariant;
             this.lastLeaderboardPlayerRatingTag = o.lastLeaderboardPlayerRatingTag;
             this.leaderboardPlayerPosition = o.leaderboardPlayerPosition || 0;
 
@@ -4176,6 +4249,32 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             this.consumeProductError = o.consumeProductError || '';
             this.consumedProductId = o.consumedProductId || 0;
             this.consumedProductTag = o.consumedProductTag || '';
+
+            this.gamesCollection = o.gamesCollection || {
+                id: 0,
+                tag: '',
+                name: '',
+                description: '',
+                games: []
+            };
+
+            this.currentGameIndex = o.currentGameIndex || 0;
+            this.currentGameId = o.currentGameId || 0;
+            this.currentGameName = o.currentGameName || '';
+            this.currentGameDescription = o.currentGameDescription || '';
+            this.currentGameIcon = o.currentGameIcon || '';
+            this.currentGameUrl = o.currentGameUrl || '';
+
+            this.gamesCollectionFetchError = o.gamesCollectionFetchError || '';
+            this.lastGamesCollectionIdOrTag = o.lastGamesCollectionIdOrTag || '';
+
+            this.document = o.document || {
+                type: '',
+                content: ''
+            };
+
+            this.lastDocumentType = o.lastDocumentType || '';
+            this.documentFetchError = o.documentFetchError || '';
         }
 
         GetDebuggerProperties() {
@@ -4470,6 +4569,77 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                             value: this.consumedProductTag
                         }
                     ]
+                },
+                {
+                    title: 'GS - Last Games Collection',
+                    properties: [
+                        {
+                            name: 'Collection ID',
+                            value: this.gamesCollection.id
+                        },
+                        {
+                            name: 'Collection Tag',
+                            value: this.gamesCollection.tag
+                        },
+                        {
+                            name: 'Collection Name',
+                            value: this.gamesCollection.name
+                        },
+                        {
+                            name: 'Collection Description',
+                            value: this.gamesCollection.description
+                        },
+                        {
+                            name: 'Fetch Error',
+                            value: this.gamesCollectionFetchError
+                        }
+                    ]
+                },
+                {
+                    title: 'GS - Games in Collection',
+                    properties: [
+                        {
+                            name: 'Current Game Index',
+                            value: this.currentGameIndex
+                        },
+                        {
+                            name: 'Current Game ID',
+                            value: this.currentGameId
+                        },
+                        {
+                            name: 'Current Game Name',
+                            value: this.currentGameName
+                        },
+                        {
+                            name: 'Current Game Description',
+                            value: this.currentGameDescription
+                        },
+                        {
+                            name: 'Current Game Icon',
+                            value: this.currentGameIcon
+                        },
+                        {
+                            name: 'Current Game Url',
+                            value: this.currentGameUrl
+                        }
+                    ]
+                },
+                {
+                    title: 'GS - Documents',
+                    properties: [
+                        {
+                            name: 'Document Type',
+                            value: this.document.type
+                        },
+                        {
+                            name: 'Document Content',
+                            value: this.document.content
+                        },
+                        {
+                            name: 'Fetch Error',
+                            value: this.documentFetchError
+                        }
+                    ]
                 }
             ];
         }
@@ -4623,6 +4793,14 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
         },
 
         OnLeaderboardAnyFetchPlayerError() {
+            return true;
+        },
+
+        OnLeaderboardPublishRecord() {
+            return true;
+        },
+
+        OnLeaderboardPublishRecordError() {
             return true;
         },
 
@@ -5012,6 +5190,77 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             return this.gs.socials.isSupportsNativeCommunityJoin;
         },
 
+        SocialsCanJoinCommunity() {
+            return this.gs.socials.canJoinCommunity;
+        },
+
+        // games collections
+        OnGamesCollectionsOpen() {
+            return true;
+        },
+
+        OnGamesCollectionsClose() {
+            return true;
+        },
+
+        OnGamesCollectionsFetchAny() {
+            return true;
+        },
+
+        OnGamesCollectionsFetchAnyError() {
+            return true;
+        },
+
+        OnGamesCollectionsFetch(idOrTag) {
+            return this.lastGamesCollectionIdOrTag === idOrTag;
+        },
+
+        OnGamesCollectionsFetchError(idOrTag) {
+            return this.lastGamesCollectionIdOrTag === idOrTag;
+        },
+
+        GamesCollectionsEachGame() {
+            each(this._runtime, this.gamesCollection.games, (game, index) => {
+                this.currentGameIndex = index;
+                this.currentGameId = game.id;
+                this.currentGameName = game.name;
+                this.currentGameDescription = game.description;
+                this.currentGameIcon = game.icon;
+                this.currentGameUrl = game.url;
+            });
+
+            return false;
+        },
+
+        IsGamesCollectionsAvailable() {
+            return this.gs.gamesCollections.isAvailable;
+        },
+
+        // documents
+        OnDocumentsOpen() {
+            return true;
+        },
+
+        OnDocumentsClose() {
+            return true;
+        },
+
+        OnDocumentsFetchAny() {
+            return true;
+        },
+
+        OnDocumentsFetchAnyError() {
+            return true;
+        },
+
+        OnDocumentsFetch(type) {
+            return this.lastDocumentType === this.mappers.documentTypes[type];
+        },
+
+        OnDocumentsFetchError(type) {
+            return this.lastDocumentType === this.mappers.documentTypes[type];
+        },
+
         OnLoadJsonError() {
             return true;
         }
@@ -5125,6 +5374,8 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                 })
                 .then((leaderboardInfo) => {
                     this.lastLeaderboardTag = tag;
+                    this.lastLeaderboardVariant = 'default';
+                    this.leaderboardInfo = leaderboardInfo.leaderboard;
                     this.leaderboard = leaderboardInfo.players;
                     this.Trigger(this.conditions.OnLeaderboardFetch);
                     this.Trigger(this.conditions.OnLeaderboardAnyFetch);
@@ -5132,6 +5383,7 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                 .catch((err) => {
                     console.warn(err);
                     this.lastLeaderboardTag = tag;
+                    this.lastLeaderboardVariant = 'default';
                     this.Trigger(this.conditions.OnLeaderboardFetchError);
                     this.Trigger(this.conditions.OnLeaderboardAnyFetchError);
                 });
@@ -5148,17 +5400,153 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
                     order: order === 0 ? 'DESC' : 'ASC'
                 })
                 .then((result) => {
+                    this.lastLeaderboardTag = tag;
+                    this.lastLeaderboardVariant = 'default';
                     this.lastLeaderboardPlayerRatingTag = tag;
+                    this.currentLeaderboardPlayer = Object.assign(this.gs.player.toJSON(), result.player);
                     this.leaderboardPlayerPosition = result.player.position;
                     this.Trigger(this.conditions.OnLeaderboardFetchPlayer);
                     this.Trigger(this.conditions.OnLeaderboardAnyFetchPlayer);
                 })
                 .catch((err) => {
                     console.warn(err);
+                    this.lastLeaderboardTag = tag;
+                    this.lastLeaderboardVariant = 'default';
                     this.lastLeaderboardPlayerRatingTag = tag;
                     this.Trigger(this.conditions.OnLeaderboardFetchPlayerError);
                     this.Trigger(this.conditions.OnLeaderboardAnyFetchPlayerError);
                 });
+        },
+
+        LeaderboardOpenScoped(idOrTag, variant, order, limit, withMe, includeFields, displayFields) {
+            const id = parseInt(idOrTag, 10) || 0;
+            const query = {
+                id,
+                tag: idOrTag,
+                variant,
+                limit,
+                order: this.mappers.order[order],
+                withMe: this.mappers.withMe[withMe],
+                includeFields: includeFields
+                    .split(',')
+                    .map((o) => o.trim())
+                    .filter((f) => f),
+                displayFields: displayFields
+                    .split(',')
+                    .map((o) => o.trim())
+                    .filter((f) => f)
+            };
+
+            return this.gs.leaderboard.openScoped(query).catch(console.warn);
+        },
+
+        LeaderboardFetchScoped(idOrTag, variant, order, limit, withMe, includeFields) {
+            const id = parseInt(idOrTag, 10) || 0;
+            const query = {
+                id,
+                tag: idOrTag,
+                variant,
+                limit,
+                order: this.mappers.order[order],
+                withMe: this.mappers.withMe[withMe],
+                includeFields: includeFields
+                    .split(',')
+                    .map((o) => o.trim())
+                    .filter((f) => f)
+            };
+
+            return this.gs.leaderboard
+                .fetchScoped(query)
+                .then((leaderboardInfo) => {
+                    this.lastLeaderboardTag = idOrTag;
+                    this.lastLeaderboardVariant = variant;
+                    this.leaderboardInfo = leaderboardInfo.leaderboard;
+                    this.leaderboard = leaderboardInfo.players;
+                    this.Trigger(this.conditions.OnLeaderboardFetch);
+                    this.Trigger(this.conditions.OnLeaderboardAnyFetch);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    this.lastLeaderboardTag = idOrTag;
+                    this.lastLeaderboardVariant = variant;
+                    this.Trigger(this.conditions.OnLeaderboardFetchError);
+                    this.Trigger(this.conditions.OnLeaderboardAnyFetchError);
+                });
+        },
+
+        LeaderboardFetchPlayerRatingScoped(idOrTag, variant, order) {
+            const id = parseInt(idOrTag, 10) || 0;
+            const query = {
+                id,
+                tag: idOrTag,
+                variant,
+                order: this.mappers.order[order]
+            };
+
+            return this.gs.leaderboard
+                .fetchPlayerRatingScoped(query)
+                .then((result) => {
+                    this.lastLeaderboardPlayerRatingTag = idOrTag;
+                    this.lastLeaderboardTag = idOrTag;
+                    this.lastLeaderboardVariant = variant;
+                    this.currentLeaderboardPlayer = Object.assign(this.gs.player.toJSON(), result.player);
+                    this.leaderboardPlayerPosition = result.player.position;
+                    this.Trigger(this.conditions.OnLeaderboardFetchPlayer);
+                    this.Trigger(this.conditions.OnLeaderboardAnyFetchPlayer);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    this.lastLeaderboardPlayerRatingTag = idOrTag;
+                    this.lastLeaderboardTag = idOrTag;
+                    this.lastLeaderboardVariant = variant;
+                    this.Trigger(this.conditions.OnLeaderboardFetchPlayerError);
+                    this.Trigger(this.conditions.OnLeaderboardAnyFetchPlayerError);
+                });
+        },
+
+        LeaderboardPublishRecord(idOrTag, variant, override) {
+            const recordsTable = this.leaderboardRecords[idOrTag];
+            const record = recordsTable ? recordsTable[variant] : null;
+
+            const id = parseInt(idOrTag, 10) || 0;
+            const query = {
+                id,
+                tag: idOrTag,
+                variant,
+                override,
+                record
+            };
+
+            return this.gs.leaderboard
+                .publishRecord(query)
+                .then((result) => {
+                    this.lastLeaderboardTag = idOrTag;
+                    this.lastLeaderboardVariant = variant;
+                    this.lastLeaderboardPlayerRatingTag = idOrTag;
+                    this.leaderboardPlayerPosition = result.player.position;
+                    this.currentLeaderboardPlayer = Object.assign(this.gs.player.toJSON(), result.player);
+
+                    this.Trigger(this.conditions.OnLeaderboardPublishRecord);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    this.lastLeaderboardTag = idOrTag;
+                    this.lastLeaderboardVariant = variant;
+                    this.lastLeaderboardPlayerRatingTag = idOrTag;
+                    this.Trigger(this.conditions.OnLeaderboardPublishRecordError);
+                });
+        },
+
+        LeaderboardSetRecord(idOrTag, variant, field, value) {
+            if (!this.leaderboardRecords[idOrTag]) {
+                this.leaderboardRecords[idOrTag] = {};
+            }
+
+            if (!this.leaderboardRecords[idOrTag][variant]) {
+                this.leaderboardRecords[idOrTag][variant] = {};
+            }
+
+            this.leaderboardRecords[idOrTag][variant][field] = value;
         },
 
         AchievementsOpen() {
@@ -5344,6 +5732,59 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             return this.gs.socials.joinCommunity();
         },
 
+        // games collections
+        GamesCollectionsOpen(idOrTag) {
+            const id = parseInt(idOrTag, 10) || 0;
+            const query = id > 0 ? { id } : { tag: idOrTag || 'ANY' };
+            return this.gs.gamesCollections.open(query);
+        },
+
+        GamesCollectionsFetch(idOrTag) {
+            const id = parseInt(idOrTag, 10) || 0;
+            const query = id > 0 ? { id } : { tag: idOrTag };
+            return this.gs.gamesCollections
+                .fetch(query)
+                .then((result) => {
+                    this.lastGamesCollectionIdOrTag = idOrTag;
+                    this.gamesCollection = result;
+                    this.Trigger(this.conditions.OnGamesCollectionsFetch);
+                    this.Trigger(this.conditions.OnGamesCollectionsFetchAny);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    this.lastGamesCollectionIdOrTag = idOrTag;
+                    this.gamesCollectionFetchError = (err && err.message) || '';
+                    this.Trigger(this.conditions.OnGamesCollectionsFetchError);
+                    this.Trigger(this.conditions.OnGamesCollectionsFetchAnyError);
+                });
+        },
+
+        // documents
+        DocumentsOpen(docType) {
+            const type = this.mappers.documentTypes[docType];
+            return this.gs.documents.open({ type });
+        },
+
+        DocumentsFetch(docType, docFormat) {
+            const type = this.mappers.documentTypes[docType];
+            const format = this.mappers.documentFormat[docFormat];
+            return this.gs.documents
+                .fetch({ type, format })
+                .then((result) => {
+                    this.lastDocumentType = type;
+                    this.document = result;
+                    this.Trigger(this.conditions.OnDocumentsFetch);
+                    this.Trigger(this.conditions.OnDocumentsFetchAny);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    this.lastDocumentType = type;
+                    this.documentFetchError = (err && err.message) || '';
+                    this.Trigger(this.conditions.OnDocumentsFetchError);
+                    this.Trigger(this.conditions.OnDocumentsFetchAnyError);
+                });
+        },
+
         ChangeLanguage(language) {
             return this.gs.changeLanguage(this.mappers.language[language]);
         },
@@ -5491,6 +5932,14 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             return this.leaderboardPlayerPosition || 0;
         },
 
+        LastLeaderboardTag() {
+            return this.lastLeaderboardTag;
+        },
+
+        LastLeaderboardVariant() {
+            return this.lastLeaderboardVariant;
+        },
+
         IsFullscreenMode() {
             return Number(this.gs.fullscreen.isEnabled);
         },
@@ -5501,6 +5950,10 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
 
         AvatarGenerator() {
             return this.gs.avatarGenerator;
+        },
+
+        ServerTime() {
+            return this.gs.serverTime;
         },
 
         PlatformType() {
@@ -5639,10 +6092,12 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
             return this.unlockedAchievementRare;
         },
 
+        // socials
         SocialsCommunityLink() {
             return this.gs.socials.communityLink;
         },
 
+        // payments
         PaymentsCurProductIndex() {
             return this.currentProductIndex;
         },
@@ -5717,6 +6172,68 @@ this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},A
 
         PaymentsConsumedProductTag() {
             return this.consumedProductTag;
+        },
+
+        // games collections
+        GamesCollectionsCollectionID() {
+            return this.gamesCollection.id;
+        },
+
+        GamesCollectionsCollectionTag() {
+            return this.gamesCollection.tag;
+        },
+
+        GamesCollectionsCollectionName() {
+            return this.gamesCollection.name;
+        },
+
+        GamesCollectionsCollectionDescription() {
+            return this.gamesCollection.description;
+        },
+
+        GamesCollectionsCurGameIndex() {
+            return this.currentGameIndex;
+        },
+
+        GamesCollectionsCurGameID() {
+            return this.currentGameId;
+        },
+
+        GamesCollectionsCurGameTag() {
+            return this.currentGameTag;
+        },
+
+        GamesCollectionsCurGameName() {
+            return this.currentGameName;
+        },
+
+        GamesCollectionsCurGameDescription() {
+            return this.currentGameDescription;
+        },
+
+        GamesCollectionsCurGameIcon() {
+            return this.currentGameIcon;
+        },
+
+        GamesCollectionsCurGameUrl() {
+            return this.currentGameUrl;
+        },
+
+        GamesCollectionsFetchError() {
+            return this.gamesCollectionFetchError;
+        },
+
+        // documents
+        DocumentsDocumentType() {
+            return this.document.type;
+        },
+
+        DocumentsDocumentContent() {
+            return this.document.content;
+        },
+
+        DocumentsFetchError() {
+            return this.documentFetchError;
         },
 
         AsJSON() {
@@ -6227,7 +6744,7 @@ self.C3_ExpressionFuncs = [
 		() => 160,
 		() => 120,
 		() => 80,
-		() => 40,
+		() => 35,
 		() => 4,
 		() => 3,
 		() => 2,
