@@ -6508,13 +6508,14 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Arr.Exps.Width,
 		C3.Plugins.Json.Exps.Get,
 		C3.Plugins.Arr.Exps.At,
-		C3.Plugins.Sprite.Acts.LoadURL,
 		C3.Plugins.Arr.Acts.Delete,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.System.Exps.len,
 		C3.Plugins.Text.Exps.Text,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.System.Cnds.While,
+		C3.Plugins.Sprite.Acts.LoadURL,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Audio.Acts.Play,
@@ -6592,6 +6593,8 @@ self.C3_JsPropNameTable = [
 	{ПоказВознаграждения: 0},
 	{КоличествоУдалённыхНовостей: 0},
 	{ТекущаяНовость: 0},
+	{НомерПрошлойЗаглушки: 0},
+	{НомерСледующейЗаглушки: 0},
 	{СостояниеЗвука: 0}
 ];
 }
@@ -6724,12 +6727,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
 			const v2 = p._GetNode(2).GetVar();
-			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".image"));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
-			const v2 = p._GetNode(2).GetVar();
 			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".truthfulness"));
 		},
 		p => {
@@ -6750,6 +6747,20 @@ self.C3_ExpressionFuncs = [
 		() => 2,
 		() => 1,
 		() => 0,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => (Math.floor(f0(6)) + 1);
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (and("", v0.GetValue()) + ".jpg");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			const v2 = p._GetNode(2).GetVar();
+			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".image"));
+		},
 		() => "",
 		() => 9,
 		() => "Default",
