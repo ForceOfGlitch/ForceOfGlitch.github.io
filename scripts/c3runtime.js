@@ -6522,8 +6522,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.System.Acts.SubVar,
-		C3.Plugins.Eponesh_GameScore.Exps.PlayerScore,
 		C3.Plugins.Eponesh_GameScore.Acts.AdsShowFullscreen,
+		C3.Plugins.Eponesh_GameScore.Exps.PlayerScore,
 		C3.Plugins.System.Acts.GoToLayout,
 		C3.Plugins.System.Acts.RestartLayout,
 		C3.Plugins.Eponesh_GameScore.Cnds.PlayerCompareScore,
@@ -6757,23 +6757,17 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (and("", v0.GetValue()) + ".jpg");
 		},
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
-			const v2 = p._GetNode(2).GetVar();
-			return () => n0.ExpObject((and("", n1.ExpObject(v2.GetValue())) + ".image"));
-		},
 		() => "",
 		() => 9,
 		() => "Default",
+		() => 5,
 		() => 516,
 		() => "Клики по основным кнопкам",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() % 2);
 		},
-		() => "score",
-		() => 5
+		() => "score"
 ];
 
 
