@@ -6530,6 +6530,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Eponesh_GameScore.Acts.PlayerSetScore,
 		C3.Plugins.Eponesh_GameScore.Acts.PlayerSync,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
+		C3.Plugins.System.Cnds.CompareBoolVar,
+		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.Sprite.Acts.StartAnim,
 		C3.Plugins.Arr.Cnds.CompareSize,
 		C3.Plugins.Arr.Acts.SetSize,
@@ -6584,6 +6586,7 @@ self.C3_JsPropNameTable = [
 	{КнопкаОбучение: 0},
 	{ОбучениеТекст: 0},
 	{BlackScreen2: 0},
+	{ЗнакПравильностиПоследнегоОтвета: 0},
 	{РекордИгрока: 0},
 	{РекламныйСчётчик: 0},
 	{ИстинностьТекущейНовостиДляКнопкиFalse: 0},
@@ -6593,6 +6596,7 @@ self.C3_JsPropNameTable = [
 	{ТекущаяНовость: 0},
 	{НомерПрошлойЗаглушки: 0},
 	{НомерСледующейЗаглушки: 0},
+	{НажатаяКнопка: 0},
 	{СостояниеЗвука: 0}
 ];
 }
