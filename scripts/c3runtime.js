@@ -6493,6 +6493,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.SetGroupActive,
 		C3.Plugins.Text.Acts.SetText,
 		C3.Plugins.AJAX.Acts.RequestFile,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Arr.Cnds.ArrForEach,
 		C3.Plugins.Arr.Acts.SetX,
 		C3.Plugins.Arr.Exps.CurX,
@@ -6512,13 +6513,13 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.System.Exps.len,
 		C3.Plugins.Text.Exps.Text,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.System.Cnds.While,
 		C3.Plugins.Sprite.Acts.LoadURL,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Audio.Acts.Play,
+		C3.Plugins.Sprite.Acts.StartAnim,
 		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.System.Acts.SubVar,
@@ -6532,7 +6533,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.WaitForPreviousActions,
 		C3.Plugins.System.Cnds.CompareBoolVar,
 		C3.Plugins.System.Acts.Wait,
-		C3.Plugins.Sprite.Acts.StartAnim,
 		C3.Plugins.Arr.Cnds.CompareSize,
 		C3.Plugins.Arr.Acts.SetSize,
 		C3.Plugins.Eponesh_GameScore.Acts.LeaderboardOpen
@@ -6704,6 +6704,7 @@ self.C3_ExpressionFuncs = [
 			return () => v0.GetValue();
 		},
 		() => "input",
+		() => 1,
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
@@ -6747,7 +6748,6 @@ self.C3_ExpressionFuncs = [
 		() => 4,
 		() => 3,
 		() => 2,
-		() => 1,
 		() => 0,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
