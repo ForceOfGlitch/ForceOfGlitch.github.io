@@ -6590,14 +6590,14 @@ self.C3_ExpressionFuncs = [
 		() => "",
 		() => 9,
 		() => "Default",
-		() => 5,
-		() => 516,
+		() => 1265,
 		() => "Клики по основным кнопкам",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() % 2);
 		},
-		() => "score"
+		() => "score",
+		() => 5
 ];
 
 
